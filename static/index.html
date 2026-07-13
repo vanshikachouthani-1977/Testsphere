@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestSphere - Automated QA Visual Hub</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: rgba(17, 24, 39, 0.7);
+            --bg-card: rgba(30, 41, 59, 0.4);
+            --border-glow: rgba(99, 102, 241, 0.25);
+            --color-indigo: #6366f1;
+            --color-violet: #8b5cf6;
+            --color-cyan: #06b6d4;
+            --color-red: #ef4444;
+            --color-green: #10b981;
+            --color-amber: #f59e0b;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Layout Grid */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Brand */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1.5rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-orb {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-violet));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--color-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        .badge-status {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--color-green);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.4; }
+            100% { transform: scale(0.9); opacity: 1; }
+        }
+
+        /* Dashboard Workspace */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards Design */
+        .card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* File Upload Zone */
+        .upload-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-box {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .upload-box:hover {
+            border-color: var(--color-indigo);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-box.has-file {
+            border-style: solid;
+            border-color: var(--color-cyan);
+            background: rgba(6, 182, 212, 0.03);
+        }
+
+        .upload-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .upload-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .file-preview {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            opacity: 0.8;
+        }
+
+        .upload-box.has-file .file-preview {
+            display: block;
+        }
+
+        .upload-box.has-file .upload-content {
+            opacity: 0;
+        }
+
+        .upload-box:hover .upload-content {
+            opacity: 1 !important;
+            background: rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 10;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        /* Textarea input */
+        .text-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 90px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: var(--color-indigo);
+        }
+
+        /* Run Button */
+        .btn-run {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-violet));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            padding: 0.85rem;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-run:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            background: linear-gradient(135deg, #7174f8, #9a6efa);
+        }
+
+        .btn-run:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Flowchart Node Graph */
+        .flowchart-wrapper {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .flow-nodes {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .node-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            position: relative;
+        }
+
+        .node {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text-secondary);
+            min-width: 120px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .node.active {
+            border-color: var(--color-indigo);
+            border-style: solid;
+            color: #fff;
+            background: rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+            transform: scale(1.05);
+        }
+
+        .node.completed {
+            border-color: var(--color-green);
+            border-style: solid;
+            color: var(--color-green);
+            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+
+        .node.bypassed {
+            border-color: var(--color-amber);
+            border-style: solid;
+            color: var(--color-amber);
+            background: rgba(245, 158, 11, 0.05);
+            opacity: 0.6;
+        }
+
+        .node.failed {
+            border-color: var(--color-red);
+            border-style: solid;
+            color: var(--color-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Flow Lines SVG overlay path style */
+        .node-connector {
+            width: 2px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: background 0.4s;
+        }
+
+        .node-connector.active {
+            background: var(--color-indigo);
+            box-shadow: 0 0 8px var(--color-indigo);
+        }
+
+        .node-connector.completed {
+            background: var(--color-green);
+        }
+
+        .node-connector.bypassed {
+            background: var(--color-amber);
+        }
+
+        /* Progress scanning animation indicator */
+        .node.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(to right, transparent, var(--color-indigo), transparent);
+            animation: scan 1.2s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Console Logs */
+        .console-logs {
+            background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #38bdf8;
+            height: 120px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .console-line {
+            margin-bottom: 0.25rem;
+            white-space: pre-wrap;
+        }
+
+        .console-line.success { color: var(--color-green); }
+        .console-line.warn { color: var(--color-amber); }
+        .console-line.danger { color: var(--color-red); }
+
+        /* Report Pane Dashboard (Right) */
+        .report-placeholder {
+            height: 100%;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            border: 2px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+            animation: bounce 2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
+        /* Final Report Layout */
+        .report-layout {
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Score Summary Banner */
+        .score-banner {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .score-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-circle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-circle circle {
+            fill: none;
+            stroke-width: 6;
+        }
+
+        .score-circle .circle-bg {
+            stroke: rgba(255, 255, 255, 0.08);
+        }
+
+        .score-circle .circle-progress {
+            stroke: var(--color-indigo);
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+
+        .score-val {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .recom-details h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .recom-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .recom-badge.go { background: rgba(16, 185, 129, 0.15); color: var(--color-green); border: 1px solid rgba(16, 185, 129, 0.25); }
+        .recom-badge.fixes { background: rgba(245, 158, 11, 0.15); color: var(--color-amber); border: 1px solid rgba(245, 158, 11, 0.25); }
+        .recom-badge.nogo { background: rgba(239, 68, 68, 0.15); color: var(--color-red); border: 1px solid rgba(239, 68, 68, 0.25); }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .metric-header {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-val {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .metric-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .metric-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--color-indigo), var(--color-cyan));
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        /* Image Display Slider Tabs */
+        .image-tabs {
+            margin-top: 1rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 0.3rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--color-indigo);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #000;
+            aspect-ratio: 4/3;
+        }
+
+        .tab-content.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Checklist Mapped Cases */
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .checklist-table th, .checklist-table td {
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .checklist-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .status-badge.pass { background: rgba(16, 185, 129, 0.15); color: var(--color-green); }
+        .status-badge.fail { background: rgba(239, 68, 68, 0.15); color: var(--color-red); }
+        .status-badge.partial { background: rgba(245, 158, 11, 0.15); color: var(--color-amber); }
+
+        /* Findings List */
+        .findings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+
+        .finding-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--color-indigo);
+            border-radius: 0 8px 8px 0;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .finding-item.critical { border-left-color: var(--color-red); }
+        .finding-item.high { border-left-color: var(--color-amber); }
+        .finding-item.medium { border-left-color: var(--color-indigo); }
+        .finding-item.low { border-left-color: var(--color-cyan); }
+
+        .finding-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .finding-meta {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .finding-text {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation -->
+        <header>
+            <div class="logo-section">
+                <div class="logo-orb">T</div>
+                <div class="logo-text">
+                    <h1>TestSphere</h1>
+                    <p>Visual QA Agentic System</p>
+                </div>
+            </div>
+            <div class="badge-status">
+                <div class="pulse-dot"></div>
+                QA Pipeline Server Connected
+            </div>
+        </header>
+
+        <!-- Main Workspace split -->
+        <div class="workspace">
+            <!-- Left inputs / stepper -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div class="card">
+                    <h2 class="card-title">Setup Ingestion Source</h2>
+                    
+                    <!-- Upload fields -->
+                    <div class="upload-row">
+                        <div class="upload-box" id="upload-mockup" onclick="triggerInput('mockup-input')">
+                            <input type="file" id="mockup-input" style="display:none;" accept="image/*" onchange="previewImage(this, 'preview-mockup', 'upload-mockup')">
+                            <img id="preview-mockup" class="file-preview" src="" alt="Mockup preview">
+                            <div class="upload-content">
+                                <span class="upload-icon">🎨</span>
+                                <div class="upload-label">Figma Mockup</div>
+                                <div class="upload-sub">Drag & drop or browse</div>
+                            </div>
+                        </div>
+
+                        <div class="upload-box" id="upload-screenshot" onclick="triggerInput('screenshot-input')">
+                            <input type="file" id="screenshot-input" style="display:none;" accept="image/*" onchange="previewImage(this, 'preview-screenshot', 'upload-screenshot')">
+                            <img id="preview-screenshot" class="file-preview" src="" alt="Screenshot preview">
+                            <div class="upload-content">
+                                <span class="upload-icon">🖥️</span>
+                                <div class="upload-label">Live Screenshot</div>
+                                <div class="upload-sub">Drag & drop or browse</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text area case list -->
+                    <div class="text-input-group">
+                        <label class="input-label" for="testcases">Define Expected Test Cases (JSON list or comma separated)</label>
+                        <textarea id="testcases" placeholder="Example:&#10;- The page background must be dark grey #1e1e24&#10;- The central action button must be pure white #ffffff&#10;- Button border-radius should be rounded"></textarea>
+                    </div>
+
+                    <!-- Action Trigger -->
+                    <button class="btn-run" id="btn-submit" onclick="executeAudit()">
+                        <span>🚀</span> Run QA Automated Audit
+                    </button>
+                </div>
+
+                <!-- Step Wise Flow Chart Diagram -->
+                <div class="card">
+                    <h2 class="card-title">System Pipeline Flowchart</h2>
+                    <div class="flowchart-wrapper">
+                        <div class="flow-nodes">
+                            <div class="node" id="node-ingest">1. Ingestion Agent</div>
+                            
+                            <div class="node-connector" id="conn-ingest"></div>
+                            
+                            <div class="node-row">
+                                <div class="node" id="node-vector">2a. Semantic CLIP Gate</div>
+                                <div class="node" id="node-pixel">2b. Structural SSIM Gate</div>
+                            </div>
+                            
+                            <div class="node-connector" id="conn-gates"></div>
+                            
+                            <div class="node" id="node-decision">3. Gatekeeper Decision Check</div>
+                            
+                            <div class="node-connector" id="conn-decision"></div>
+                            
+                            <div class="node" id="node-vision">4. AI Vision Auditor (Groq Llama-4-Scout)</div>
+                            
+                            <div class="node-connector" id="conn-vision"></div>
+                            
+                            <div class="node" id="node-mapper">5. Test-Case Mapper (Groq Llama-3.3)</div>
+                            
+                            <div class="node-connector" id="conn-mapper"></div>
+                            
+                            <div class="node" id="node-report">6. Report compiler & recommendation</div>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Logs Console -->
+                    <div class="console-logs" id="console">
+                        <div class="console-line">Ready. Upload images and click run audit to initiate pipeline...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right results -->
+            <div style="height: 100%;">
+                <!-- Placeholder when idle -->
+                <div class="report-placeholder" id="placeholder">
+                    <div class="placeholder-icon">📈</div>
+                    <h3>QA Report Dashboard</h3>
+                    <p style="font-size: 0.85rem; max-width: 320px; margin-top: 0.5rem;">Provide figma mockup and screenshot images to generate complete severity audit reports.</p>
+                </div>
+
+                <!-- Final Report (Hidden by default) -->
+                <div class="card report-layout" id="report-view">
+                    <h2 class="card-title">Audit Report Output</h2>
+                    
+                    <!-- Recommendation banner -->
+                    <div class="score-banner">
+                        <div class="recom-details">
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Deployment Recommendation</p>
+                            <h3 id="report-recom-title">No-Go</h3>
+                            <span class="recom-badge nogo" id="report-recom-badge">No-Go</span>
+                        </div>
+                        <div class="score-circle">
+                            <svg>
+                                <circle class="circle-bg" cx="40" cy="40" r="36"></circle>
+                                <circle class="circle-progress" id="report-score-ring" cx="40" cy="40" r="36"></circle>
+                            </svg>
+                            <span class="score-val" id="report-score-val">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Primary similarity scores -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span>CLIP SEMANTIC GATE</span>
+                                <span id="metric-vector-pct">0%</span>
+                            </div>
+                            <div class="metric-val" id="metric-vector-val">0.00</div>
+                            <div class="metric-bar"><div class="metric-bar-fill" id="bar-vector"></div></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span>SSIM PIXEL GATE</span>
+                                <span id="metric-pixel-pct">0%</span>
+                            </div>
+                            <div class="metric-val" id="metric-pixel-val">0.00</div>
+                            <div class="metric-bar"><div class="metric-bar-fill" id="bar-pixel"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Selector for Images -->
+                    <div class="image-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="switchTab('tab-diff')">Diff Heatmap</button>
+                            <button class="tab-btn" onclick="switchTab('tab-mockup')">Figma Design</button>
+                            <button class="tab-btn" onclick="switchTab('tab-screenshot')">Live Screenshot</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="tab-diff">
+                            <img id="img-diff" src="" alt="Overlay Heatmap Image">
+                        </div>
+                        <div class="tab-content" id="tab-mockup">
+                            <img id="img-mockup" src="" alt="Figma Design mockup">
+                        </div>
+                        <div class="tab-content" id="tab-screenshot">
+                            <img id="img-screenshot" src="" alt="Live screenshot">
+                        </div>
+                    </div>
+
+                    <!-- Table of Mapped Checklist Results -->
+                    <div>
+                        <h3 class="input-label" style="margin-bottom: 0.25rem;">Mapped Test Cases Checklist</h3>
+                        <table class="checklist-table">
+                            <thead>
+                                <tr>
+                                    <th>Test Case Requirements</th>
+                                    <th>Verification</th>
+                                    <th>Reason / Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody id="testcase-results-tbody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Section of AI Auditing findings -->
+                    <div>
+                        <h3 class="input-label" style="margin-bottom: 0.25rem;">AI Vision Anomalies list</h3>
+                        <div class="findings-list" id="findings-container">
+                            <!-- Dynamic items -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default text cases in textbox
+        document.getElementById('testcases').value = 
+            `"The background should be dark grey #1e1e24"\n` +
+            `"The central action button must be pure white #ffffff"\n` +
+            `"Button border-radius should be rounded"`;
+
+        function triggerInput(id) {
+            document.getElementById(id).click();
+        }
+
+        // Preview images in drag drop boxes
+        function previewImage(input, previewId, boxId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(boxId).classList.add('has-file');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Switch images tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Stepper flowchart logic
+        function log(message, type = 'info') {
+            const consoleBox = document.getElementById('console');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.innerText = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleBox.appendChild(line);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function resetFlowchart() {
+            const ids = ['ingest', 'vector', 'pixel', 'decision', 'vision', 'mapper', 'report'];
+            ids.forEach(id => {
+                const el = document.getElementById(`node-${id}`);
+                if (el) el.className = 'node';
+            });
+            const conns = ['ingest', 'gates', 'decision', 'vision', 'mapper'];
+            conns.forEach(conn => {
+                const el = document.getElementById(`conn-${conn}`);
+                if (el) el.className = 'node-connector';
+            });
+        }
+
+        function setNodeState(nodeId, state) {
+            const el = document.getElementById(`node-${nodeId}`);
+            if (el) el.className = `node ${state}`;
+        }
+
+        function setConnectorState(connId, state) {
+            const el = document.getElementById(`conn-${connId}`);
+            if (el) el.className = `node-connector ${state}`;
+        }
+
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+
+
+        async function executeAudit() {
+            const mockupFile = document.getElementById('mockup-input').files[0];
+            const screenshotFile = document.getElementById('screenshot-input').files[0];
+            
+            if (!mockupFile || !screenshotFile) {
+                alert('Please upload both the Figma Mockup and Live Screenshot images.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true;
+            resetFlowchart();
+            document.getElementById('console').innerHTML = '';
+            document.getElementById('placeholder').style.display = 'flex';
+            document.getElementById('report-view').style.display = 'none';
+
+            log("Preparing visual QA analysis task...", "info");
+
+            // Build payload Form
+            const formData = new FormData();
+            formData.append('mockup', mockupFile);
+            formData.append('screenshot', screenshotFile);
+            
+            // Format testcases text area list
+            const rawCases = document.getElementById('testcases').value.split('\n')
+                .map(tc => tc.replace(/^-\s*/, '').replace(/^"\s*/, '').replace(/"\s*$/, '').trim())
+                .filter(tc => tc.length > 0);
+            formData.append('test_cases', JSON.stringify(rawCases));
+
+            let report = null;
+            let reqFailed = false;
+
+            // Trigger the HTTP post request in the background
+            const apiPromise = fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(async res => {
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail || "Server error");
+                }
+                return res.json();
+            }).catch(e => {
+                reqFailed = true;
+                return e;
+            });
+
+            // Start step-wise flowchart animation flow
+            try {
+                // Step 1: Ingestion
+                setNodeState('ingest', 'active');
+                log("Executing Ingestion Agent: Validating image formats and normalizing resolution...", "info");
+                await delay(900);
+                setNodeState('ingest', 'completed');
+                setConnectorState('ingest', 'completed');
+
+                // Step 2: Parallel Gatekeepers
+                setNodeState('vector', 'active');
+                setNodeState('pixel', 'active');
+                log("Spawning Parallel Gatekeeper checks in asyncio worker thread pool...", "info");
+                log("Running Vector Embedding similarities (sentence-transformers CLIP)...", "info");
+                log("Running Pixel Structural SSIM analysis (scikit-image OpenCV)...", "info");
+                
+                // Wait for the API response or simulated duration to resolve
+                const result = await apiPromise;
+                if (reqFailed) {
+                    throw result;
+                }
+                report = result;
+
+                await delay(1200);
+                setNodeState('vector', 'completed');
+                setNodeState('pixel', 'completed');
+                setConnectorState('gates', 'completed');
+
+                // Step 3: Decision evaluation
+                setNodeState('decision', 'active');
+                const vSim = report.metrics.vector_similarity.toFixed(4);
+                const pSim = report.metrics.pixel_similarity.toFixed(4);
+                log(`Evaluating gatekeeper bounds: Vector similarity = ${vSim}, Pixel structural = ${pSim}`, "info");
+                await delay(800);
+                
+                if (report.metrics.is_fundamental_mismatch) {
+                    setNodeState('decision', 'failed');
+                    setConnectorState('decision', 'bypassed');
+                    setNodeState('vision', 'bypassed');
+                    setConnectorState('vision', 'bypassed');
+                    setNodeState('mapper', 'bypassed');
+                    setConnectorState('mapper', 'bypassed');
+                    log("⚠ Fundamental mismatch triggered! Visual layout differs significantly. Bypassing LLM API audit.", "warn");
+                } else {
+                    setNodeState('decision', 'completed');
+                    setConnectorState('decision', 'completed');
+
+                    // Step 4: AI visual audit
+                    setNodeState('vision', 'active');
+                    log("Invoking AI Vision Audit Agent with Llama-4-Scout multimodal weights...", "info");
+                    await delay(1500);
+                    setNodeState('vision', 'completed');
+                    setConnectorState('vision', 'completed');
+
+                    // Step 5: Test Case mapping
+                    setNodeState('mapper', 'active');
+                    log("Invoking Test Case Mapping Agent. Evaluating design criteria...", "info");
+                    await delay(1000);
+                    setNodeState('mapper', 'completed');
+                    setConnectorState('mapper', 'completed');
+                }
+
+                // Step 6: Compilation
+                setNodeState('report', 'active');
+                log("Compiling final recommendations, deduction metrics and UI heatmap data...", "info");
+                await delay(700);
+                setNodeState('report', 'completed');
+
+                log("Audit complete! Report successfully generated.", "success");
+                renderReport(report);
+
+            } catch (e) {
+                log(`Pipeline failed: ${e.message}`, "danger");
+                setNodeState('ingest', 'failed');
+                setNodeState('vector', 'failed');
+                setNodeState('pixel', 'failed');
+                setNodeState('decision', 'failed');
+                setNodeState('vision', 'failed');
+                setNodeState('mapper', 'failed');
+                setNodeState('report', 'failed');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Render response data inside report HTML components
+        function renderReport(report) {
+            document.getElementById('placeholder').style.display = 'none';
+            const reportView = document.getElementById('report-view');
+            reportView.style.display = 'flex';
+
+            // Set scores
+            const score = Math.round(report.overall_similarity_score);
+            document.getElementById('report-score-val').innerText = score;
+            
+            // Circular progress ring dashoffset
+            const radius = 36;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (score / 100) * circumference;
+            document.getElementById('report-score-ring').style.strokeDashoffset = offset;
+
+            // Set recommendation details
+            const recom = report.deployment_recommendation;
+            const badge = document.getElementById('report-recom-badge');
+            const title = document.getElementById('report-recom-title');
+            
+            badge.innerText = recom;
+            title.innerText = recom === 'Go' ? 'Ready to Deploy' : (recom === 'Go with fixes' ? 'Review & Patch' : 'Deployment Blocked');
+            
+            if (recom === 'Go') {
+                badge.className = 'recom-badge go';
+                document.getElementById('report-score-ring').style.stroke = 'var(--color-green)';
+            } else if (recom === 'Go with fixes') {
+                badge.className = 'recom-badge fixes';
+                document.getElementById('report-score-ring').style.stroke = 'var(--color-amber)';
+            } else {
+                badge.className = 'recom-badge nogo';
+                document.getElementById('report-score-ring').style.stroke = 'var(--color-red)';
+            }
+
+            // Set gatekeeper scores
+            const vScore = report.metrics.vector_similarity;
+            const pScore = report.metrics.pixel_similarity;
+            
+            document.getElementById('metric-vector-val').innerText = vScore.toFixed(4);
+            document.getElementById('metric-vector-pct').innerText = `${Math.round(vScore * 100)}%`;
+            document.getElementById('bar-vector').style.width = `${vScore * 100}%`;
+
+            document.getElementById('metric-pixel-val').innerText = pScore.toFixed(4);
+            document.getElementById('metric-pixel-pct').innerText = `${Math.round(pScore * 100)}%`;
+            document.getElementById('bar-pixel').style.width = `${pScore * 100}%`;
+
+            // Images sources
+            const diffSrc = report.diff_image_base64 || report.diff_image_url || '';
+            document.getElementById('img-diff').src = diffSrc;
+            
+            // File input preview source copies
+            document.getElementById('img-mockup').src = document.getElementById('preview-mockup').src;
+            document.getElementById('img-screenshot').src = document.getElementById('preview-screenshot').src;
+
+            // Render Checklist Table
+            const tbody = document.getElementById('testcase-results-tbody');
+            tbody.innerHTML = '';
+            
+            if (report.test_case_results && report.test_case_results.length > 0) {
+                report.test_case_results.forEach(res => {
+                    const row = document.createElement('tr');
+                    
+                    const statusClass = res.status.toLowerCase();
+                    row.innerHTML = `
+                        <td style="font-weight: 500;">${res.test_case}</td>
+                        <td><span class="status-badge ${statusClass}">${res.status}</span></td>
+                        <td style="color: var(--text-secondary); font-size: 0.75rem;">${res.reason}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-secondary);">No test cases evaluated.</td></tr>`;
+            }
+
+            // Render AI Findings List
+            const findingsContainer = document.getElementById('findings-container');
+            findingsContainer.innerHTML = '';
+
+            if (report.ai_findings && report.ai_findings.length > 0) {
+                report.ai_findings.forEach(find => {
+                    const el = document.createElement('div');
+                    const severityClass = find.severity.toLowerCase();
+                    el.className = `finding-item ${severityClass}`;
+                    
+                    el.innerHTML = `
+                        <div class="finding-header">
+                            <span>Anomaly category: ${find.category.toUpperCase()}</span>
+                            <span class="status-badge ${severityClass}">${find.severity}</span>
+                        </div>
+                        <div class="finding-text">${find.finding}</div>
+                        <div class="finding-meta">
+                            <strong>Location:</strong> ${find.location} | 
+                            <strong>Expected:</strong> ${find.expected} | 
+                            <strong>Actual:</strong> ${find.actual}
+                        </div>
+                    `;
+                    findingsContainer.appendChild(el);
+                });
+            } else {
+                if (report.metrics.is_fundamental_mismatch) {
+                    findingsContainer.innerHTML = `<div style="text-align: center; font-size: 0.75rem; color: var(--color-amber); padding: 1rem;">AI detailed audit skipped due to fundamental mismatch gate trigger.</div>`;
+                } else {
+                    findingsContainer.innerHTML = `<div style="text-align: center; font-size: 0.75rem; color: var(--color-green); padding: 1rem;">No anomalies detected by AI Vision Agent. Perfect match!</div>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

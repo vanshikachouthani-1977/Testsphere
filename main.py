@@ -26,9 +26,13 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Instantiate the central orchestrator
 orchestrator = QAOrchestrator()
 
+from fastapi.responses import FileResponse
+
 @app.get("/", include_in_schema=False)
 def root():
-    # Redirect root to Swagger UI for quick manual verification
+    index_path = os.path.join("static", "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
     return RedirectResponse(url="/docs")
 
 @app.post("/upload", summary="Upload Mockup & Screenshot for QA Audit")
