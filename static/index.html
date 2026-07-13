@@ -235,6 +235,35 @@
             opacity: 0;
         }
 
+        .delete-btn {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: rgba(239, 68, 68, 0.85);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 30;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 1);
+            transform: scale(1.15);
+        }
+
+        .upload-box.has-file .delete-btn {
+            display: flex;
+        }
+
         .upload-box:hover .upload-content {
             opacity: 1 !important;
             background: rgba(0, 0, 0, 0.7);
@@ -746,6 +775,7 @@
                         <div class="upload-box" id="upload-mockup" onclick="triggerInput('mockup-input')">
                             <input type="file" id="mockup-input" style="display:none;" accept="image/*" onchange="previewImage(this, 'preview-mockup', 'upload-mockup')">
                             <img id="preview-mockup" class="file-preview" src="" alt="Mockup preview">
+                            <div class="delete-btn" onclick="clearImage(event, 'mockup-input', 'preview-mockup', 'upload-mockup')">&times;</div>
                             <div class="upload-content">
                                 <span class="upload-icon">🎨</span>
                                 <div class="upload-label">Figma Mockup</div>
@@ -756,6 +786,7 @@
                         <div class="upload-box" id="upload-screenshot" onclick="triggerInput('screenshot-input')">
                             <input type="file" id="screenshot-input" style="display:none;" accept="image/*" onchange="previewImage(this, 'preview-screenshot', 'upload-screenshot')">
                             <img id="preview-screenshot" class="file-preview" src="" alt="Screenshot preview">
+                            <div class="delete-btn" onclick="clearImage(event, 'screenshot-input', 'preview-screenshot', 'upload-screenshot')">&times;</div>
                             <div class="upload-content">
                                 <span class="upload-icon">🖥️</span>
                                 <div class="upload-label">Live Screenshot</div>
@@ -934,6 +965,15 @@
                 }
                 reader.readAsDataURL(file);
             }
+        }
+
+        // Clear uploaded image
+        function clearImage(event, inputId, previewId, boxId) {
+            event.stopPropagation(); // Prevent opening the file browser dialog
+            const input = document.getElementById(inputId);
+            input.value = ""; // Clear file selector
+            document.getElementById(previewId).src = "";
+            document.getElementById(boxId).classList.remove('has-file');
         }
 
         // Switch images tabs
