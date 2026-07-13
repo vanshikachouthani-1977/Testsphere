@@ -77,6 +77,26 @@ class QAOrchestrator:
             # Map findings to test cases
             test_case_results = await self.mapper_agent.map_findings(test_cases, ai_findings)
             
+            # Apply penalties for failed test cases to align numeric score with verification results
+            test_case_penalties = 0.0
+            failed_count = 0
+            partial_count = 0
+            for tc_res in test_case_results:
+                status = tc_res.get("status")
+                if status == "FAIL":
+                    test_case_penalties += 15.0
+                    failed_count += 1
+                elif status == "PARTIAL":
+                    test_case_penalties += 7.5
+                    partial_count += 1
+            
+            if test_case_penalties > 0:
+                deduction_breakdown["test_case_penalties"] = test_case_penalties
+                deduction_breakdown["failed_test_cases_count"] = failed_count
+                deduction_breakdown["partial_test_cases_count"] = partial_count
+                deduction_breakdown["score_before_test_penalties"] = overall_score
+                overall_score = max(0.0, overall_score - test_case_penalties)
+            
         # 5. Report Generation
         report = self.report_agent.generate(
             vector_similarity=vector_similarity,
